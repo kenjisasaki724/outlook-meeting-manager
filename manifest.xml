@@ -1,25 +1,36 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<OfficeApp xmlns="http://schemas.microsoft.com/office/appforoffice/1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0" xmlns:mailappor="http://schemas.microsoft.com/office/mailappversionoverrides/1.0" xsi:type="MailApp">
+<OfficeApp
+  xmlns="http://schemas.microsoft.com/office/appforoffice/1.1"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0"
+  xmlns:mailappor="http://schemas.microsoft.com/office/mailappversionoverrides/1.0"
+  xsi:type="MailApp">
+
   <Id>e1fbd909-0e62-42c3-b4da-8bbf682ad616</Id>
   <Version>1.0.0.0</Version>
-  <ProviderName>Contoso</ProviderName>
+  <ProviderName>MeetingManager</ProviderName>
   <DefaultLocale>en-US</DefaultLocale>
-  <DisplayName DefaultValue="MeetingManager"/>
-  <Description DefaultValue="会議一括管理アドイン"/>
+  <DisplayName DefaultValue="会議一括管理"/>
+  <Description DefaultValue="複数会議の一括作成・削除 UI（読み取り画面で開く安定版）"/>
+
   <IconUrl DefaultValue="https://kenjisasaki724.github.io/outlook-meeting-manager/assets/icon-64.png"/>
   <HighResolutionIconUrl DefaultValue="https://kenjisasaki724.github.io/outlook-meeting-manager/assets/icon-128.png"/>
-  <SupportUrl DefaultValue="https://www.contoso.com/help"/>
+
   <AppDomains>
     <AppDomain>https://kenjisasaki724.github.io</AppDomain>
   </AppDomains>
+
   <Hosts>
     <Host Name="Mailbox"/>
   </Hosts>
+
   <Requirements>
     <Sets>
-      <Set Name="Mailbox" MinVersion="1.1"/>
+      <Set Name="Mailbox" MinVersion="1.3"/>
     </Sets>
   </Requirements>
+
+  <!-- 旧式フォーム設定（念のため保持。読み取りで taskpane を直リンク）-->
   <FormSettings>
     <Form xsi:type="ItemRead">
       <DesktopSettings>
@@ -27,50 +38,25 @@
         <RequestedHeight>650</RequestedHeight>
       </DesktopSettings>
     </Form>
-    <Form xsi:type="ItemEdit">
-      <DesktopSettings>
-        <SourceLocation DefaultValue="https://kenjisasaki724.github.io/outlook-meeting-manager/index.html"/>
-        <RequestedHeight>650</RequestedHeight>
-      </DesktopSettings>
-    </Form>
   </FormSettings>
-  <Permissions>ReadWriteItem</Permissions>
+
+  <!-- 読み取り条件だけ（ここを極力シンプルに）-->
+  <Permissions>ReadItem</Permissions>
   <Rule xsi:type="RuleCollection" Mode="Or">
     <Rule xsi:type="ItemIs" ItemType="Message" FormType="Read"/>
-    <Rule xsi:type="ItemIs" ItemType="Message" FormType="Edit"/>
   </Rule>
-  <DisableEntityHighlighting>false</DisableEntityHighlighting>
+
+  <!-- VersionOverrides: 読み取りのリボンにボタンを出して Taskpane を開くだけ -->
   <VersionOverrides xmlns="http://schemas.microsoft.com/office/mailappversionoverrides" xsi:type="VersionOverridesV1_0">
     <Requirements>
       <bt:Sets DefaultMinVersion="1.3">
         <bt:Set Name="Mailbox"/>
       </bt:Sets>
     </Requirements>
+
     <Hosts>
       <Host xsi:type="MailHost">
         <DesktopFormFactor>
-          <ExtensionPoint xsi:type="MessageComposeCommandSurface">
-            <OfficeTab id="TabDefault">
-              <Group id="msgComposeGroup">
-                <Label resid="GroupLabel"/>
-                <Control xsi:type="Button" id="msgComposeOpenPaneButton">
-                  <Label resid="TaskpaneButton.Label"/>
-                  <Supertip>
-                    <Title resid="TaskpaneButton.Label"/>
-                    <Description resid="TaskpaneButton.Tooltip"/>
-                  </Supertip>
-                  <Icon>
-                    <bt:Image size="16" resid="Icon.16x16"/>
-                    <bt:Image size="32" resid="Icon.32x32"/>
-                    <bt:Image size="80" resid="Icon.80x80"/>
-                  </Icon>
-                  <Action xsi:type="ShowTaskpane">
-                    <SourceLocation resid="Taskpane.Url"/>
-                  </Action>
-                </Control>
-              </Group>
-            </OfficeTab>
-          </ExtensionPoint>
           <ExtensionPoint xsi:type="MessageReadCommandSurface">
             <OfficeTab id="TabDefault">
               <Group id="msgReadGroup">
@@ -96,6 +82,7 @@
         </DesktopFormFactor>
       </Host>
     </Hosts>
+
     <Resources>
       <bt:Images>
         <bt:Image id="Icon.16x16" DefaultValue="https://kenjisasaki724.github.io/outlook-meeting-manager/assets/icon-16.png"/>
