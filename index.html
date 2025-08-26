@@ -75,21 +75,50 @@
         
         .form-row {
             display: flex;
-            gap: 10px;
-            margin-bottom: 10px;
+            flex-direction: column;
+            gap: 5px;
+            margin-bottom: 15px;
+        }
+        
+        .form-row.inline {
+            flex-direction: row;
             align-items: center;
+            gap: 8px;
         }
         
         .form-row label {
-            min-width: 80px;
             font-weight: 600;
+            margin-bottom: 3px;
+        }
+        
+        .form-row.inline label {
+            margin-bottom: 0;
+            min-width: 50px;
+            flex-shrink: 0;
         }
         
         .form-row input, .form-row select, .form-row textarea {
-            flex: 1;
+            width: 100%;
             padding: 8px;
             border: 1px solid #ccc;
             border-radius: 3px;
+            box-sizing: border-box;
+        }
+        
+        .form-row.inline input {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .time-inputs {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        
+        .time-inputs input {
+            flex: 1;
+            min-width: 80px;
         }
         
         .participants-input {
@@ -279,14 +308,18 @@
                 <div class="form-row">
                     <label>日付:</label>
                     <input type="date" class="date-input" required>
-                    <label>開始:</label>
-                    <input type="time" class="start-time-input" value="13:00" required>
-                    <label>終了:</label>
-                    <input type="time" class="end-time-input" value="14:00" required>
+                </div>
+                <div class="form-row">
+                    <label>時間:</label>
+                    <div class="time-inputs">
+                        <input type="time" class="start-time-input" value="13:00" required>
+                        <span>〜</span>
+                        <input type="time" class="end-time-input" value="14:00" required>
+                    </div>
                 </div>
                 <div class="form-row">
                     <label>参加者:</label>
-                    <textarea class="participants-input" placeholder="xxx1@xxx.com, xxx2@xxx.com, xxx3@xxx.com" required></textarea>
+                    <textarea class="participants-input" placeholder="xxx1@xxx.com, xxx2@xxx.com, xxx3@xxx.com" required rows="3"></textarea>
                 </div>
                 <div class="form-row">
                     <button class="btn btn-danger" onclick="removeMeetingEntry(this)">削除</button>
